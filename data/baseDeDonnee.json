@@ -1,0 +1,75 @@
+{
+  "categorie": "Bases de données",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Quel type de base de données est MongoDB ?",
+      "reponses": [
+        "Base relationnelle",
+        "Base orientée documents",
+        "Base en mémoire",
+        "Base orientée graphes"
+      ],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Quel langage est utilisé pour interroger une base relationnelle comme MySQL ou PostgreSQL ?",
+      "reponses": ["NoSQL", "GraphQL", "SQL", "JSON"],
+      "reponse_correct": [2]
+    },
+    {
+      "type": "single",
+      "question": "Quelle commande permet de lister toutes les bases de données dans MySQL ?",
+      "reponses": [
+        "SHOW DATABASES;",
+        "LIST DATABASES;",
+        "SELECT DATABASES;",
+        "GET DATABASES;"
+      ],
+      "reponse_correct": [0]
+    },
+    {
+      "type": "single",
+      "question": "Dans une base relationnelle, comment appelle-t-on une ligne d'une table ?",
+      "reponses": ["Champ", "Colonne", "Enregistrement", "Clé"],
+      "reponse_correct": [2]
+    },
+    {
+      "type": "single",
+      "question": "Quel SGBD est orienté documents ?",
+      "reponses": ["PostgreSQL", "MySQL", "MongoDB", "SQLite"],
+      "reponse_correct": [2]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels SGBD sont relationnels ?",
+      "reponses": ["MySQL", "PostgreSQL", "MongoDB", "SQLite"],
+      "reponse_correct": [0, 1, 3]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels SGBD supportent le langage SQL ?",
+      "reponses": ["MySQL", "PostgreSQL", "Oracle", "MongoDB"],
+      "reponse_correct": [0, 1, 2]
+    },
+    {
+      "type": "single",
+      "question": "Quel est le format des documents stockés dans MongoDB ?",
+      "reponses": ["XML", "BSON", "CSV", "SQL"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quelles sont des opérations CRUD ?",
+      "reponses": ["Create", "Read", "Update", "Delete", "Drop"],
+      "reponse_correct": [0, 1, 2, 3]
+    },
+    {
+      "type": "single",
+      "question": "Quel moteur MySQL est le plus utilisé pour les transactions ?",
+      "reponses": ["InnoDB", "MyISAM", "Memory", "CSV"],
+      "reponse_correct": [0]
+    }
+  ]
+}

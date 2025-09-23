@@ -1,0 +1,82 @@
+{
+  "categorie": "JavaScript",
+  "questions": [
+    {
+      "type": "multiple",
+      "question": "Quels sont les types de données primitifs en JavaScript ?",
+      "reponses": [
+        "String",
+        "Number",
+        "Boolean",
+        "Object",
+        "Undefined",
+        "Symbol"
+      ],
+      "reponse_correct": [0, 1, 2, 4, 5]
+    },
+    {
+      "type": "single",
+      "question": "Quelle méthode transforme une chaîne JSON en objet JavaScript ?",
+      "reponses": [
+        "JSON.stringify()",
+        "JSON.parse()",
+        "JSON.toObject()",
+        "parse.JSON()"
+      ],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Que signifie NaN en JavaScript ?",
+      "reponses": [
+        "Not a Node",
+        "Not a Number",
+        "New array Number",
+        "No assigned Name"
+      ],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Quelle est la portée d'une variable déclarée avec let ?",
+      "reponses": ["Globale", "Bloc", "Fonction", "Module"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels mots-clés permettent de déclarer une variable ?",
+      "reponses": ["var", "const", "let", "define"],
+      "reponse_correct": [0, 1, 2]
+    },
+    {
+      "type": "single",
+      "question": "Comment écrire un commentaire sur une seule ligne en JavaScript ?",
+      "reponses": ["<!-- -->", "//", "/* */", "#"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Quel est le résultat de typeof null ?",
+      "reponses": ["null", "object", "undefined", "string"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quelles méthodes sont utilisées pour itérer sur un tableau ?",
+      "reponses": ["forEach", "map", "filter", "reduce", "loop()"],
+      "reponse_correct": [0, 1, 2, 3]
+    },
+    {
+      "type": "single",
+      "question": "Quelle structure permet de gérer les promesses plus facilement ?",
+      "reponses": ["Callbacks", "Async/Await", "EventEmitter", "Interval"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quelles opérations sont considérées comme falsy en JavaScript ?",
+      "reponses": ["0", "''", "null", "undefined", "NaN", "false", "[]"],
+      "reponse_correct": [0, 1, 2, 3, 4, 5]
+    }
+  ]
+}

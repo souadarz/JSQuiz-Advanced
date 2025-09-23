@@ -1,0 +1,75 @@
+{
+  "categorie": "Node.js",
+  "questions": [
+    {
+      "type": "single",
+      "question": "Node.js est principalement utilisé pour :",
+      "reponses": [
+        "Exécuter du JavaScript côté serveur",
+        "Créer des sites statiques uniquement",
+        "Compiler du code C++",
+        "Remplacer le navigateur"
+      ],
+      "reponse_correct": [0]
+    },
+    {
+      "type": "single",
+      "question": "Quel module intégré permet de créer un serveur HTTP ?",
+      "reponses": ["fs", "http", "events", "net"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Quel gestionnaire de paquets est installé avec Node.js par défaut ?",
+      "reponses": ["yarn", "npm", "pnpm", "composer"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Quelle méthode est utilisée pour lire un fichier en Node.js ?",
+      "reponses": ["fs.read()", "fs.readFile()", "fs.load()", "file.open()"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "single",
+      "question": "Que permet d'utiliser 'require' en Node.js ?",
+      "reponses": [
+        "Importer un module",
+        "Créer un serveur",
+        "Compiler le code",
+        "Définir une classe"
+      ],
+      "reponse_correct": [0]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels objets globaux sont disponibles dans Node.js ?",
+      "reponses": ["__dirname", "process", "window", "module", "exports"],
+      "reponse_correct": [0, 1, 3, 4]
+    },
+    {
+      "type": "single",
+      "question": "Quel est le fichier d'entrée par défaut d'une application Node.js ?",
+      "reponses": ["server.js", "index.js", "main.js", "app.js"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels modules intégrés permettent de gérer les fichiers ?",
+      "reponses": ["fs", "path", "http", "crypto"],
+      "reponse_correct": [0, 1]
+    },
+    {
+      "type": "single",
+      "question": "Quel mot-clé permet de déclarer un module ES dans Node.js (ESM) ?",
+      "reponses": ["require", "export/import", "define", "module.exports"],
+      "reponse_correct": [1]
+    },
+    {
+      "type": "multiple",
+      "question": "Quels frameworks peuvent être utilisés avec Node.js ?",
+      "reponses": ["Express", "NestJS", "Next.js", "Laravel"],
+      "reponse_correct": [0, 1, 2]
+    }
+  ]
+}

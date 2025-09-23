@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSQuizStarter</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="screen active" id="startTest">
+            <h1>JSQuizStarter</h1>
+            <div class="userName">
+                <label for="">Entrez votre nom d'utilisateur</label>
+                <input type="text" id="usernameInput">
+                <p id="errorMsg" style="color: red; display:none;">Veuillez entrer votre nom d'utilisateur</p>
+            </div>
+            <p>Vous etes pres pour tester votre connaissances ?</p>
+            <!-- <button id="startBtn">Commencer</button> -->
+            <p>Choisir une categorie pour commencer</p>
+            <div class="categories">
+                <div class="cat">JavaScript</div>
+                <div class="cat">Node.js</div>
+                <div class="cat">Bases de données</div>
+            </div>
+
+        </div>
+        <div class="screen" id="questionReponse">
+            <div class="timeUsername">
+                <p>Temps: <span id="time"></span></p>
+                <p id="username"></p>
+            </div>
+            <div class="header">
+                <h2 id="question">les questions</h2>
+                <div class="testInfo">
+                    <p>Question <span id="currentQuestion"></span> de <span id ="nbrQuestions"></span></p>
+                </div>
+            </div>
+            <div class="reponses" id="reponses">
+            </div>
+            <div class="btns">
+                <button id="nextBtn" disabled="disabled">Suivant</button>
+                <button type="submit" id="submitBtn">Valider</button>
+            </div>
+        </div>
+        <div class="screen " id="result" >
+            <p id="quizTermine">quiz terminé</p>
+            <p id="feedBack"></p>
+            <p id="scoreResult">Votre score est : <span id="scoreFinale"></span> sur <span id ="totalQuestions"></span></p>
+            <div id="finalResult">
+            </div>
+            <button id="recommancerBtn">Recommencer</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
