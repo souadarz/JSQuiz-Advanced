@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="screen" id="acceuill">
+        <div class="screen" id="startScreen">
             <h1>JSQuizStarter</h1>
             <div class="userName">
                 <label for="">Entrez votre nom d'utilisateur</label>
@@ -59,6 +59,7 @@
             <h1>JSQuizStarter</h1>
             <p>Vous etes pres pour tester votre connaissances ?</p>
             <p>Choisir une categorie pour commencer</p>
+            <p>Temps de quiz: <span class="timeGlobale"></span></p>
             <div class="categories">
                 <div class="cat" data-categorie="javaScript">JavaScript</div>
                 <div class="cat" data-categorie="nodeJs">Node.js</div>
@@ -85,8 +86,9 @@
             </div>
         </div>
 
-        <div class="screen " id="result" >
+        <div class="screen " id="resultScreen" >
             <p id="quizTermine">quiz terminé</p>
+            <p>Vous avez passé <span id="timeGlob"></span> dans tout le quiz</p>
             <p id="feedBack"></p>
             <p id="scoreResult">Votre score est : <span id="scoreFinale"></span> sur <span id ="totalQuestions"></span></p>
             <div id="finalResult">
