@@ -8,24 +8,66 @@
 </head>
 <body>
     <div class="container">
-        <div class="screen active" id="startTest">
+        <div class="screen" id="startScreen">
             <h1>JSQuizStarter</h1>
             <div class="userName">
                 <label for="">Entrez votre nom d'utilisateur</label>
                 <input type="text" id="usernameInput">
                 <p id="errorMsg" style="color: red; display:none;">Veuillez entrer votre nom d'utilisateur</p>
             </div>
-            <p>Vous etes pres pour tester votre connaissances ?</p>
-            <!-- <button id="startBtn">Commencer</button> -->
-            <p>Choisir une categorie pour commencer</p>
-            <div class="categories">
-                <div class="cat">JavaScript</div>
-                <div class="cat">Node.js</div>
-                <div class="cat">Bases de données</div>
+            <div id="quiz-instructions" class="p-4 bg-gray-100 rounded shadow-md max-w-lg mx-auto">
+                <h2 class="text-xl font-bold mb-2">Instructions du Quiz</h2>
+                <ol class="list-decimal ml-5 text-gray-700 space-y-1">
+                    <li>Choisissez une catégorie (JavaScript, NodeJs…).</li>
+                    <li>Répondez aux questions une par une.</li>
+                    <li>Sélectionnez une ou plusieurs réponses selon la question.</li>
+                    <li>Cliquez sur <strong>Suivant</strong> pour continuer.</li>
+                    <li>Le score final s'affichera à la fin du quiz.</li>
+                </ol>
+                <button id="startQuizBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Commencer le Quiz
+                </button>
             </div>
-
         </div>
-        <div class="screen" id="questionReponse">
+
+        <div class="screen" >
+            <h1>JSQuizStarter</h1>
+            <div  id="dejaInscrit">
+                <div class="card cardReprendre">
+                    <h3>Reprendre</h3>
+                    <p>Continuer là où vous vous êtes arrêté</p>
+                </div>
+
+                <div class="card cardRevision">
+                    <h3>Révision</h3>
+                    <p>Voir les questions et réponses</p>
+                </div>
+
+                <div class="card carddashboard">
+                    <h3>Tableau de bord</h3>
+                    <p>Consulter vos statistiques</p>
+                </div>
+
+                <div class="card cardNewQuiz">
+                    <h3>Nouvelle partie</h3>
+                    <p>Recommencer un quiz depuis le début</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="screen active" id="categorieScreen">
+            <h1>JSQuizStarter</h1>
+            <p>Vous etes pres pour tester votre connaissances ?</p>
+            <p>Choisir une categorie pour commencer</p>
+            <p>Temps de quiz: <span class="timeGlobale"></span></p>
+            <div class="categories">
+                <div class="cat" data-categorie="javaScript">JavaScript</div>
+                <div class="cat" data-categorie="nodeJs">Node.js</div>
+                <div class="cat" data-categorie="baseDeDonnee">Bases de données</div>
+            </div>
+        </div>
+
+        <div class="screen" id="questionScreen">
             <div class="timeUsername">
                 <p>Temps: <span id="time"></span></p>
                 <p id="username"></p>
@@ -43,8 +85,10 @@
                 <button type="submit" id="submitBtn">Valider</button>
             </div>
         </div>
-        <div class="screen " id="result" >
+
+        <div class="screen " id="resultScreen" >
             <p id="quizTermine">quiz terminé</p>
+            <p>Vous avez passé <span id="timeGlob"></span> dans tout le quiz</p>
             <p id="feedBack"></p>
             <p id="scoreResult">Votre score est : <span id="scoreFinale"></span> sur <span id ="totalQuestions"></span></p>
             <div id="finalResult">
@@ -52,6 +96,7 @@
             <button id="recommancerBtn">Recommencer</button>
         </div>
     </div>
-    <script src="script.js"></script>
+    <script type="module" src="./modules/main.js"></script>
+    <!-- <script src="script.js"></script> -->
 </body>
 </html>
