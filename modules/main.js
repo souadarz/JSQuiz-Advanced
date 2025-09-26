@@ -12,7 +12,7 @@ import {
   totalSeconds,
 } from "./quiz.js";
 import { saveQuiz } from "./storage.js";
-import { switchScreen, showResult } from "./UI.js";
+import { switchScreen, showResult, handleClickEvent } from "./UI.js";
 
 quizState.score = 0;
 quizState.currentIndex = 0;
@@ -32,6 +32,8 @@ const resultScreen = document.getElementById("resultScreen");
 const nbrQuestions = document.getElementById("nbrQuestions");
 const feedback = document.querySelector("#feedBack");
 const recommancerBtn = document.querySelector("#recommancerBtn");
+const cardNewQuiz = document.getElementById("cardNewQuiz");
+
 
 export let questionsData = [];
 
@@ -44,6 +46,8 @@ startQuizBtn.addEventListener("click", () => {
     switchScreen(startScreen,cardScreen);
   }
 });
+
+handleClickEvent(cardNewQuiz, ()=>switchScreen(cardScreen,categorieScreen));
 
 categories.forEach((cat) => {
   cat.addEventListener("click", async () => {
