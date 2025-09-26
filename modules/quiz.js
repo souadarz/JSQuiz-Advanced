@@ -7,13 +7,13 @@ const nextBtn = document.getElementById("nextBtn");
 const time = document.getElementById("time");
 const submitBtn = document.getElementById("submitBtn");
 const timeGlobale = document.getElementsByClassName("timeGlobale");
+const cardScreen = document.getElementById("cardScreen");
 
 let timerQuestion;
 export let timerG;
 export let totalSeconds = 0 ;
 
 export const quizState = {
-  // currentIndex: 0,
   quizHistory: [],
   score: 0
 };
@@ -46,10 +46,10 @@ export function showQuestions(questionData, index) {
     reponsesDiv.appendChild(label);
   });
   stopTimer(timerQuestion);
-  timerQuestion = timer(7);
+  timerQuestion = timer(3);
 }
 
-//Récupère les réponses utilisateur et vérifie si elles sont correctes
+//Récupere les réponses utilisateur et verifier si elles sont correctes
 export function validateAnswer(currentQuestionData, responsesContainer) {
   const selectedRes = responsesContainer.querySelectorAll(".ResInput:checked");
   const userChoices = [];
@@ -65,7 +65,7 @@ export function validateAnswer(currentQuestionData, responsesContainer) {
     correctAnswers.length === sortedUserChoices.length &&
     correctAnswers.every((val, i) => val === sortedUserChoices[i]);
 
-  return { isCorrect, userChoices, correctAnswers };
+  return { isCorrect, userChoices, correctAnswers, selectedRes};
 }
 
 // l'ajoute des réponses de l'utilisateur à l'historique
@@ -136,3 +136,4 @@ export function feedBack(score, total) {
     return "Il faut réviser, ne vous découragez pas";
   }
 }
+

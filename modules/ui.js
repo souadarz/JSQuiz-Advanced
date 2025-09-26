@@ -1,4 +1,5 @@
 import { questionsData } from "./main.js";
+import { validateAnswer } from "./quiz.js";
 
 const timeGlob = document.getElementById("timeGlob");
 const finalResult = document.querySelector("#finalResult");
@@ -26,7 +27,7 @@ export function createAnswerInput(rep, i, questionType) {
   return { input, label };
 }
 
-//fonction
+//gerer la sélection d'une reponse dans le quiz(reponse multiple ou unique)
 export function handleAnswerSelection(input, label, nextBtn) {
   if (input.type === "radio") {
     document
@@ -39,6 +40,7 @@ export function handleAnswerSelection(input, label, nextBtn) {
   nextBtn.disabled = false;
 }
 
+//l'affichage des resultas d'un quiz(durée, score, la question avec reponses choisies et reponses correct)
 export function showResult(quiz, totalSeconds) {
   timeGlob.textContent = `${totalSeconds} seconds `;
   scoreFinale.textContent = quiz.score;
@@ -65,4 +67,30 @@ export function showResult(quiz, totalSeconds) {
 
     finalResult.appendChild(divResult);
   });
+}
+
+//handle cklick sur un element de dom
+export function handleClickEvent(element,fct){
+  element.addEventListener("click", ()=>{
+    fct();
+  });
+}
+
+//affichage du feedback sur les reponses
+export function showAnswerFeedback(currentQuestionData, reponsesDiv){
+  const { userChoices, isCorrect, correctAnswers, selectedRes } = validateAnswer(
+      currentQuestionData,
+      reponsesDiv
+    );
+
+    selectedRes.forEach((input)=>{
+      if(isCorrect){
+        const label = input.closest(".ResInput");
+        label.style.background = "#22c55e";
+      }else if(userChoices.some(choice => !correctAnswers.includes(choice) )){
+        selectedRes.style.background = "#ef4444";
+      }else if(userChoices.some(choise => correctAnswers.includes(choise))){
+        label.style.background = "#22c55e";
+      }
+    });
 }

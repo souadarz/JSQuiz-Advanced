@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="container">
-        <div class="screen" id="startScreen">
+        <div class="screen active" id="startScreen">
             <h1>JSQuizStarter</h1>
             <div class="userName">
                 <label for="">Entrez votre nom d'utilisateur</label>
@@ -30,7 +30,7 @@
             </div>
         </div>
 
-        <div class="screen" >
+        <div class="screen" id="cardScreen">
             <h1>JSQuizStarter</h1>
             <div  id="dejaInscrit">
                 <div class="card cardReprendre">
@@ -43,19 +43,19 @@
                     <p>Voir les questions et réponses</p>
                 </div>
 
-                <div class="card carddashboard">
+                <div class="card carddashboard" id="carddashboard">
                     <h3>Tableau de bord</h3>
                     <p>Consulter vos statistiques</p>
                 </div>
 
-                <div class="card cardNewQuiz">
+                <div class="card cardNewQuiz" id="cardNewQuiz">
                     <h3>Nouvelle partie</h3>
                     <p>Recommencer un quiz depuis le début</p>
                 </div>
             </div>
         </div>
         
-        <div class="screen active" id="categorieScreen">
+        <div class="screen" id="categorieScreen">
             <h1>JSQuizStarter</h1>
             <p>Vous etes pres pour tester votre connaissances ?</p>
             <p>Choisir une categorie pour commencer</p>
