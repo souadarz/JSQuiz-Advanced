@@ -26,7 +26,7 @@ export function createAnswerInput(rep, i, questionType) {
   return { input, label };
 }
 
-//fonction
+//
 export function handleAnswerSelection(input, label, nextBtn) {
   if (input.type === "radio") {
     document
@@ -39,6 +39,7 @@ export function handleAnswerSelection(input, label, nextBtn) {
   nextBtn.disabled = false;
 }
 
+//l'affichage des resultas d'un quiz(durée, score, la question avec reponses choisies et reponses correct)
 export function showResult(quiz, totalSeconds) {
   timeGlob.textContent = `${totalSeconds} seconds `;
   scoreFinale.textContent = quiz.score;

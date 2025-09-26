@@ -46,10 +46,10 @@ export function showQuestions(questionData, index) {
     reponsesDiv.appendChild(label);
   });
   stopTimer(timerQuestion);
-  timerQuestion = timer(7);
+  timerQuestion = timer(3);
 }
 
-//Récupère les réponses utilisateur et vérifie si elles sont correctes
+//Récupere les réponses utilisateur et verifier si elles sont correctes
 export function validateAnswer(currentQuestionData, responsesContainer) {
   const selectedRes = responsesContainer.querySelectorAll(".ResInput:checked");
   const userChoices = [];

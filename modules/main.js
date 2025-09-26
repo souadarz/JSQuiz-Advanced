@@ -9,37 +9,53 @@ import {
   feedBack,
   timerG,
   stopTimer,
-  totalSeconds
+  totalSeconds,
 } from "./quiz.js";
+import { saveQuiz } from "./storage.js";
 import { switchScreen, showResult } from "./UI.js";
 
 quizState.score = 0;
 quizState.currentIndex = 0;
 quizState.quizHistory = [];
+let usernameValue = "";
 
 const startScreen = document.getElementById("startScreen");
+const usernameInput = document.getElementById("usernameInput");
+const username = document.getElementById("username");
+const startQuizBtn = document.getElementById("startQuizBtn");
+const cardScreen = document.getElementById("cardScreen");
 const categories = document.querySelectorAll(".cat");
 const categorieScreen = document.getElementById("categorieScreen");
 const questionScreen = document.getElementById("questionScreen");
 const reponsesDiv = document.getElementById("reponses");
 const resultScreen = document.getElementById("resultScreen");
-const timeGlobale = document.getElementById("timeGlobale");
 const nbrQuestions = document.getElementById("nbrQuestions");
 const feedback = document.querySelector("#feedBack");
 const recommancerBtn = document.querySelector("#recommancerBtn");
 
 export let questionsData = [];
 
+startQuizBtn.addEventListener("click", () => {
+  usernameValue = usernameInput.value.trim();
+  if (usernameValue === "") {
+    errorMsg.style.display = "block";
+  } else {
+    errorMsg.style.display = "none";
+    switchScreen(startScreen,cardScreen);
+  }
+});
+
 categories.forEach((cat) => {
   cat.addEventListener("click", async () => {
     switchScreen(categorieScreen, questionScreen);
     timerGlobale();
+    username.textContent = usernameValue;
     const categorie = cat.dataset.categorie;
     const dataCategorie = await fetchData(categorie);
     questionsData = dataCategorie.questions;
     nbrQuestions.textContent = questionsData.length;
     quizState.quizHistory.push({
-      //   username: usernameValue,
+      username: usernameValue,
       categorie: categorie,
       reponses: [],
       date: new Date().toLocaleString(),
@@ -78,8 +94,7 @@ nextBtn.addEventListener("click", () => {
 submitBtn.addEventListener("click", () => {
   stopTimer(timerG);
   switchScreen(questionScreen, resultScreen);
-  // localStorage.setItem("historique", JSON.stringify(quizHistorique));
-
+  saveQuiz(quizState.quizHistory);
   let dernierQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
   quizState.quizHistory.push(dernierQuiz);
   const totalQuest = questionsData.length;
@@ -89,8 +104,6 @@ submitBtn.addEventListener("click", () => {
 
 recommancerBtn.addEventListener("click", () => {
   switchScreen(resultScreen, startScreen);
-
-  //   usernameInput.value = localStorage.getItem("username");
   quizState.currentIndex = 0;
   quizState.score = 0;
   nextBtn.style.display = "block";
