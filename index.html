@@ -141,7 +141,7 @@
                 <div class="chart-grid">
                     <div class="chart-container">
                         <h3>📈 Répartition par Catégorie</h3>
-                        <canvas id="categorieChart" width="300" height="120"></canvas>
+                        <canvas id="categorieChart" width="400" height="200"></canvas>
                     </div>
                     <div class="chart-container">
                         <h3>📊 Progression des Scores</h3>
@@ -160,10 +160,25 @@
             <!-- Boutons d'action -->
             <div class="btns">
                 <button id="recommancerBtn">Recommencer</button>
-                <button id="clearBtn">Réinitialiser</button>
-                <button id="exportCsvBtn">Export CSV</button>
-                <button id="exportJsonBtn">Export JSON</button>
+                <button id="statsTableBtn">Réinitialiser</button>
             </div>
+        </div>
+        <!-- 7eme ecran -->
+        <div class="screen" id="statsTableScreen">
+            <h2 id="dashboardTitle">Historique des parties</h2>
+            <table id="historyTable" class="dashboard-table">
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>catégorie</th>
+                        <th>Score</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <button id="exportCsvBtn">Export CSV</button>
+            <button id="exportJsonBtn">Export JSON</button>
         </div>
     </div>
     <script type="module" src="./modules/main.js"></script>

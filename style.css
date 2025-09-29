@@ -407,13 +407,7 @@ h1 {
     border-radius: 12px;
     padding: 20px;
     border: 1px solid rgba(190, 49, 205, 0.5);
-    /* transition: all 0.3s ease; */
 }
-
-/* .categorieCard:hover {
-    transform: scale(1.05);
-    background: linear-gradient(45deg, rgba(190, 49, 205, 0.4), rgba(51,0,170, 0.6));
-} */
 
 .catName {
     font-size: 1.3rem;
@@ -527,18 +521,18 @@ h1 {
     opacity: 0.7;
 }
 
-.empty-state h3 {
+/* .empty-state h3 {
     font-size: 1.5rem;
     margin-bottom: 15px;
     color: rgb(246, 210, 5);
-}
+} */
 
-.progress-fill {
+/* .progress-fill {
     height: 100%;
     background: linear-gradient(90deg, rgb(246, 210, 5), rgb(190, 49, 205));
     border-radius: 4px;
     transition: width 0.3s ease;
-}
+} */
 
 @media screen and (max-width: 768px) {
     .container {
@@ -565,5 +559,50 @@ h1 {
     
     .btns button {
         width: 200px;
+    }
+}
+
+
+/* tableau du statistique  */
+#dashboardTitle{
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: rgb(246,210,5);
+}
+
+.dashboard-table{
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(255,255,255,0.05);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 5px 10px 20px rgba(0,0,0,0.5);
+}
+
+.dashboard-table th,
+.dashboard-table td{
+    padding: 14px 10px;
+    text-align: center;
+    font-size: 1rem;
+    color: white;
+}
+
+.dashboard-table thead{
+    background: rgb(190, 49, 205); 
+}
+
+.dashboard-table tr:nth-child(even){
+    background: rgba(255,255,255,0.08); 
+}
+.dashboard-table tr:hover{
+    background: rgba(190,49,205,0.4);
+    /* transition: background 0.3s ease; */
+}
+
+@media screen and (max-width: 600px){
+    .dashboard-table th, .dashboard-table td{
+        font-size: 0.9rem;
+        padding: 10px 6px;
     }
 }

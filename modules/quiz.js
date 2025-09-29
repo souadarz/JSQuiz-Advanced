@@ -1,4 +1,10 @@
-import { createAnswerInput, displayCategorieStats, displayStats, displayTopPlayers, handleAnswerSelection, switchScreen } from "./UI.js";
+import {
+  createAnswerInput,
+  displayCategorieStats,
+  displayStats,
+  displayTopPlayers,
+  handleAnswerSelection,
+} from "./UI.js";
 import { createCategorieCharts, createProgressScoreShart } from "./chart.js";
 import { questionsData } from "./main.js";
 import { topPlayers } from "./stats.js";
@@ -9,19 +15,17 @@ const reponsesDiv = document.getElementById("reponses");
 const nextBtn = document.getElementById("nextBtn");
 const time = document.getElementById("time");
 const submitBtn = document.getElementById("submitBtn");
-const timeGlobale = document.getElementsByClassName("timeGlobale");
-const cardScreen = document.getElementById("cardScreen");
-const resultScreen = document.getElementById("resultScreen");
-const dashboardScreen = document.getElementById("dashboardScreen");
+const tbody = document.querySelector("#historyTable tbody");
 
 let timerQuestion;
 export let timerG;
-export let totalSeconds = 0 ;
+export let totalSeconds = 0;
 
 export const quizState = {
   quizHistory: [],
-  score: 0
+  score: 0,
 };
+
 
 export async function fetchData(categorie) {
   try {
@@ -70,7 +74,7 @@ export function validateAnswer(currentQuestionData, responsesContainer) {
     correctAnswers.length === sortedUserChoices.length &&
     correctAnswers.every((val, i) => val === sortedUserChoices[i]);
 
-  return { isCorrect, userChoices, correctAnswers, selectedRes};
+  return { isCorrect, userChoices, correctAnswers, selectedRes };
 }
 
 // l'ajoute des réponses de l'utilisateur à l'historique
@@ -91,13 +95,12 @@ export function updateQuizHistorique(
 
 // Passe à la question suivante ou termine le quiz
 export function handleNextStep(currentIndex, quizHistory = [], score) {
-
   stopTimer(timerQuestion);
   if (currentIndex < questionsData.length - 1) {
     let newIndex = currentIndex + 1;
     nextBtn.disabled = true;
     showQuestions(questionsData, newIndex);
-    return newIndex
+    return newIndex;
   } else {
     nextBtn.style.display = "none";
     submitBtn.style.display = "block";
@@ -130,8 +133,10 @@ export function timerGlobale() {
 }
 
 export function formatTime(sec) {
-  const m = Math.floor(sec / 60).toString().padStart(2,"0");
-  const s = (sec % 60).toString().padStart(2,"0");
+  const m = Math.floor(sec / 60)
+    .toString()
+    .padStart(2, "0");
+  const s = (sec % 60).toString().padStart(2, "0");
   return `${m}:${s}`;
 }
 
@@ -148,11 +153,30 @@ export function feedBack(score, total) {
   }
 }
 
-export function displayDashboard(){
+export function displayDashboard() {
   const history = getQuizHistory();
   displayStats(history);
   displayTopPlayers(topPlayers(history));
   createProgressScoreShart(history);
   createCategorieCharts(history);
   displayCategorieStats(history);
+}
+
+export function displayHistoryTable(history) {
+
+  history.forEach((quiz) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+    <td>${quiz.username}</td>
+    <td>${quiz.categorie}</td>
+    <td>${quiz.score}</td>
+    <td>${formatDate(quiz.date)}</td>
+  `;
+    tbody.appendChild(tr);
+  });
+}
+
+export function formatDate(isoString) {
+  const date = new Date(isoString);
+  return date.toLocaleString();
 }

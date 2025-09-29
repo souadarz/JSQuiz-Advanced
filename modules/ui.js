@@ -132,10 +132,11 @@ export function displayTopPlayers(topPlayers){
   });
 }
 
+// affichage des statistiques par categorie
 export function displayCategorieStats(history){
   containerCatStats.innerHTML = "";
 
-  const categories = ['JavaScript', 'Node.js', 'Bases de données'];
+  const categories = ['javaScript', 'nodeJs', 'baseDeDonnee'];
   
   categories.forEach((categorie)=> {
     const {avgScoreCategorie: avgScore, nbrGamesCategorie} = avgScoreCategorie(history, categorie);

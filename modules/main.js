@@ -1,3 +1,4 @@
+import { exportToCSV, exportToJson } from "./export.js";
 import {
   fetchData,
   showQuestions,
@@ -11,6 +12,7 @@ import {
   stopTimer,
   totalSeconds,
   displayDashboard,
+  displayHistoryTable
 } from "./quiz.js";
 import { getQuizHistory, saveQuiz } from "./storage.js";
 import { switchScreen, showResult, handleClickEvent } from "./UI.js";
@@ -36,6 +38,11 @@ const recommancerBtn = document.querySelector("#recommancerBtn");
 const cardNewQuiz = document.getElementById("cardNewQuiz");
 const displayDashboardBtn = document.getElementById("displayDashboardBtn");
 const cardDashboard = document.getElementById("cardDashboard");
+const dashboardScreen = document.getElementById("dashboardScreen");
+const statsTableScreen = document.getElementById("statsTableScreen");
+const exportCsvBtn = document.getElementById("exportCsvBtn");
+const statsTableBtn = document.getElementById("statsTableBtn");
+const exportJsonBtn = document.getElementById("exportJsonBtn");
 
 export let questionsData = [];
 
@@ -123,3 +130,19 @@ handleClickEvent(cardDashboard, () => {
   switchScreen(cardScreen, dashboardScreen);
   displayDashboard(history);
 });
+
+handleClickEvent(statsTableBtn,()=>{
+  const history = getQuizHistory();
+  switchScreen(dashboardScreen,statsTableScreen);
+  displayHistoryTable(history);
+});
+
+handleClickEvent(exportCsvBtn, ()=>{
+  const history = getQuizHistory();
+  exportToCSV(history);
+});
+
+handleClickEvent(exportJsonBtn, ()=>{
+  const history = getQuizHistory();
+  exportToJson(history);
+})
