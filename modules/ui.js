@@ -1,10 +1,17 @@
 import { questionsData } from "./main.js";
-import { validateAnswer } from "./quiz.js";
+import { formatTime, validateAnswer } from "./quiz.js";
+import { nbrtotalGames, bestScore, avgScore, avgScoreCategorie } from "./stats.js";
 
 const timeGlob = document.getElementById("timeGlob");
 const finalResult = document.querySelector("#finalResult");
 const scoreFinale = document.getElementById("scoreFinale");
 const total = document.getElementById("totalQuestions");
+const totalGames = document.getElementById("totalGames");
+const meilleurScore = document.getElementById("bestScore");
+const moyScore = document.getElementById("avgScore");
+const totalTime = document.getElementById("totalTime");
+const containerTopPlayers = document.getElementById("topPlayers");
+const containerCatStats = document.getElementById("catStats");
 
 export function switchScreen(firstScreen, secondeScreen) {
   firstScreen.classList.remove("active");
@@ -42,7 +49,7 @@ export function handleAnswerSelection(input, label, nextBtn) {
 
 //l'affichage des resultas d'un quiz(durée, score, la question avec reponses choisies et reponses correct)
 export function showResult(quiz, totalSeconds) {
-  timeGlob.textContent = `${totalSeconds} seconds `;
+  timeGlob.textContent = `${formatTime(totalSeconds)} seconds `;
   scoreFinale.textContent = quiz.score;
   total.textContent = questionsData.length;
   finalResult.innerHTML = "";
@@ -75,7 +82,7 @@ export function handleClickEvent(element,fct){
     fct();
   });
 }
-
+ 
 //affichage du feedback sur les reponses
 export function showAnswerFeedback(currentQuestionData, reponsesDiv){
   const { userChoices, isCorrect, correctAnswers, selectedRes } = validateAnswer(
@@ -93,4 +100,58 @@ export function showAnswerFeedback(currentQuestionData, reponsesDiv){
         label.style.background = "#22c55e";
       }
     });
+}
+
+//affichage des statistiques
+export function displayStats(history){
+  console.log("inside dislay stats");
+  totalGames.textContent = nbrtotalGames(history);
+  meilleurScore.textContent = bestScore(history);
+  moyScore.textContent = avgScore(history);
+}
+
+//affichage des top 3 players
+export function displayTopPlayers(topPlayers){
+  containerTopPlayers.innerHTML = "";
+
+  topPlayers.forEach((player) => {
+    const card = document.createElement('div');
+    card.className = 'playerCard';
+    const playerName = document.createElement("h3");
+    const playerInfo = document.createElement('div');
+    playerName.textContent = player.username;
+    const playerGames = document.createElement("p");
+    playerGames.textContent = `${player.games} partie(s) jouée(s)`;
+    const playerScore = document.createElement('div');
+    playerScore.className = "playerScore";
+    playerScore.textContent = `${player.avgScore}`;
+
+    playerInfo.append(playerName, playerGames)
+    card.append(playerInfo, playerScore)
+    containerTopPlayers.appendChild(card);
+  });
+}
+
+export function displayCategorieStats(history){
+  containerCatStats.innerHTML = "";
+
+  const categories = ['JavaScript', 'Node.js', 'Bases de données'];
+  
+  categories.forEach((categorie)=> {
+    const {avgScoreCategorie: avgScore, nbrGamesCategorie} = avgScoreCategorie(history, categorie);
+    const cardCat = document.createElement('div');
+    cardCat.className = 'categorieCard';
+    cardCat.innerHTML = `
+    <div class="catName">${categorie}</div>
+    <div class="catStat">
+        <span>Parties jouées:</span>
+        <span><strong>${nbrGamesCategorie}</strong></span>
+    </div>
+    <div class="catStat">
+        <span>Score moyen:</span>
+        <span><strong>${avgScore}</strong></span>
+    </div>
+    `;
+    containerCatStats.appendChild(cardCat);
+  });
 }

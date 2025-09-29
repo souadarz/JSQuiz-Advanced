@@ -1,5 +1,8 @@
-import { createAnswerInput, handleAnswerSelection } from "./UI.js";
+import { createAnswerInput, displayCategorieStats, displayStats, displayTopPlayers, handleAnswerSelection, switchScreen } from "./UI.js";
+import { createCategorieCharts, createProgressScoreShart } from "./chart.js";
 import { questionsData } from "./main.js";
+import { topPlayers } from "./stats.js";
+import { getQuizHistory } from "./storage.js";
 
 const question = document.getElementById("question");
 const reponsesDiv = document.getElementById("reponses");
@@ -8,6 +11,8 @@ const time = document.getElementById("time");
 const submitBtn = document.getElementById("submitBtn");
 const timeGlobale = document.getElementsByClassName("timeGlobale");
 const cardScreen = document.getElementById("cardScreen");
+const resultScreen = document.getElementById("resultScreen");
+const dashboardScreen = document.getElementById("dashboardScreen");
 
 let timerQuestion;
 export let timerG;
@@ -121,10 +126,16 @@ export function timerGlobale() {
   totalSeconds = 0;
   timerG = setInterval(() => {
     totalSeconds++;
-    timeGlobale.textContent = totalSeconds;
   }, 1000);
 }
 
+export function formatTime(sec) {
+  const m = Math.floor(sec / 60).toString().padStart(2,"0");
+  const s = (sec % 60).toString().padStart(2,"0");
+  return `${m}:${s}`;
+}
+
+// fonction qui retrun le feedBack selon le score
 export function feedBack(score, total) {
   if (score === total) {
     return "Excellent ! Vous avez tout juste, bravo";
@@ -137,3 +148,11 @@ export function feedBack(score, total) {
   }
 }
 
+export function displayDashboard(){
+  const history = getQuizHistory();
+  displayStats(history);
+  displayTopPlayers(topPlayers(history));
+  createProgressScoreShart(history);
+  createCategorieCharts(history);
+  displayCategorieStats(history);
+}

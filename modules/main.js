@@ -10,8 +10,9 @@ import {
   timerG,
   stopTimer,
   totalSeconds,
+  displayDashboard,
 } from "./quiz.js";
-import { saveQuiz } from "./storage.js";
+import { getQuizHistory, saveQuiz } from "./storage.js";
 import { switchScreen, showResult, handleClickEvent } from "./UI.js";
 
 quizState.score = 0;
@@ -33,7 +34,8 @@ const nbrQuestions = document.getElementById("nbrQuestions");
 const feedback = document.querySelector("#feedBack");
 const recommancerBtn = document.querySelector("#recommancerBtn");
 const cardNewQuiz = document.getElementById("cardNewQuiz");
-
+const displayDashboardBtn = document.getElementById("displayDashboardBtn");
+const cardDashboard = document.getElementById("cardDashboard");
 
 export let questionsData = [];
 
@@ -43,11 +45,11 @@ startQuizBtn.addEventListener("click", () => {
     errorMsg.style.display = "block";
   } else {
     errorMsg.style.display = "none";
-    switchScreen(startScreen,cardScreen);
+    switchScreen(startScreen, cardScreen);
   }
 });
 
-handleClickEvent(cardNewQuiz, ()=>switchScreen(cardScreen,categorieScreen));
+handleClickEvent(cardNewQuiz, () => switchScreen(cardScreen, categorieScreen));
 
 categories.forEach((cat) => {
   cat.addEventListener("click", async () => {
@@ -62,7 +64,7 @@ categories.forEach((cat) => {
       username: usernameValue,
       categorie: categorie,
       reponses: [],
-      date: new Date().toLocaleString(),
+      date: new Date().toISOString(),
       score: quizState.score,
     });
     if (dataCategorie) {
@@ -72,7 +74,6 @@ categories.forEach((cat) => {
 });
 
 nextBtn.addEventListener("click", () => {
-  console.log(totalSeconds);
   const currentQuestionData = questionsData[quizState.currentIndex];
   const { userChoices, isCorrect, correctAnswers } = validateAnswer(
     currentQuestionData,
@@ -94,13 +95,12 @@ nextBtn.addEventListener("click", () => {
   );
 });
 
-//à revoir la logic de locale storage
 submitBtn.addEventListener("click", () => {
   stopTimer(timerG);
   switchScreen(questionScreen, resultScreen);
-  saveQuiz(quizState.quizHistory);
   let dernierQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
-  quizState.quizHistory.push(dernierQuiz);
+  saveQuiz(dernierQuiz);
+
   const totalQuest = questionsData.length;
   feedback.innerHTML = feedBack(dernierQuiz.score, totalQuest);
   showResult(dernierQuiz, totalSeconds);
@@ -112,4 +112,14 @@ recommancerBtn.addEventListener("click", () => {
   quizState.score = 0;
   nextBtn.style.display = "block";
   submitBtn.style.display = "none";
+});
+
+handleClickEvent(displayDashboardBtn, () => {
+  switchScreen(resultScreen, dashboardScreen);
+  displayDashboard(history);
+});
+
+handleClickEvent(cardDashboard, () => {
+  switchScreen(cardScreen, dashboardScreen);
+  displayDashboard(history);
 });

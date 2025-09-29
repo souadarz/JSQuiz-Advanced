@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JSQuizStarter</title>
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.0/dist/chart.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns"></script>
 </head>
 <body>
     <div class="container">
+        <!-- premier ecran -->
         <div class="screen active" id="startScreen">
             <h1>JSQuizStarter</h1>
             <div class="userName">
@@ -15,24 +18,27 @@
                 <input type="text" id="usernameInput">
                 <p id="errorMsg" style="color: red; display:none;">Veuillez entrer votre nom d'utilisateur</p>
             </div>
-            <div id="quiz-instructions" class="p-4 bg-gray-100 rounded shadow-md max-w-lg mx-auto">
-                <h2 class="text-xl font-bold mb-2">Instructions du Quiz</h2>
-                <ol class="list-decimal ml-5 text-gray-700 space-y-1">
-                    <li>Choisissez une catégorie (JavaScript, NodeJs…).</li>
-                    <li>Répondez aux questions une par une.</li>
-                    <li>Sélectionnez une ou plusieurs réponses selon la question.</li>
-                    <li>Cliquez sur <strong>Suivant</strong> pour continuer.</li>
-                    <li>Le score final s'affichera à la fin du quiz.</li>
-                </ol>
-                <button id="startQuizBtn" class="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                    Commencer le Quiz
-                </button>
-            </div>
-        </div>
 
+            <div id="quizInstructions">
+                <h2>Instructions du Quiz</h2>
+                <ul>
+                    <li>Cliquez sur <strong>Commencer le quiz</strong> pour accéder aux catégories.</li>
+                    <li>Choisissez une catégorie (JavaScript, NodeJs…).</li>
+                    <li>Sélectionnez une ou plusieurs réponses selon la question.</li>
+                    <li>Vous ne pouvez pas revenir en arrière une fois la question passée.</li>
+                    <li>Si le temps imparti pour une question est écoulé, elle passera automatiquement à la suivante.</li>
+                    <li>Après avoir répondu, cliquez sur <strong>Suivant</strong> pour continuer.</li>
+                    <li>Toutes les informations sur le quiz seront affichées à la fin.</li>
+                </ul>
+
+                <button id="startQuizBtn">Commencer le Quiz</button>
+            </div>
+
+        </div>
+        <!-- 2eme écran -->
         <div class="screen" id="cardScreen">
             <h1>JSQuizStarter</h1>
-            <div  id="dejaInscrit">
+            <div  id="cards">
                 <div class="card cardReprendre">
                     <h3>Reprendre</h3>
                     <p>Continuer là où vous vous êtes arrêté</p>
@@ -43,7 +49,7 @@
                     <p>Voir les questions et réponses</p>
                 </div>
 
-                <div class="card carddashboard" id="carddashboard">
+                <div class="card carddashboard" id="cardDashboard">
                     <h3>Tableau de bord</h3>
                     <p>Consulter vos statistiques</p>
                 </div>
@@ -54,19 +60,19 @@
                 </div>
             </div>
         </div>
-        
+        <!-- 3eme écran -->
         <div class="screen" id="categorieScreen">
             <h1>JSQuizStarter</h1>
             <p>Vous etes pres pour tester votre connaissances ?</p>
             <p>Choisir une categorie pour commencer</p>
-            <p>Temps de quiz: <span class="timeGlobale"></span></p>
+            <!-- <p>Temps de quiz: <span class="timeGlobale"></span></p> -->
             <div class="categories">
                 <div class="cat" data-categorie="javaScript">JavaScript</div>
                 <div class="cat" data-categorie="nodeJs">Node.js</div>
                 <div class="cat" data-categorie="baseDeDonnee">Bases de données</div>
             </div>
         </div>
-
+        <!-- 4eme écran -->
         <div class="screen" id="questionScreen">
             <div class="timeUsername">
                 <p>Temps: <span id="time"></span></p>
@@ -85,18 +91,81 @@
                 <button type="submit" id="submitBtn">Valider</button>
             </div>
         </div>
-
+        <!-- 5eme écran -->
         <div class="screen " id="resultScreen" >
             <p id="quizTermine">quiz terminé</p>
-            <p>Vous avez passé <span id="timeGlob"></span> dans tout le quiz</p>
+            <p id="tempsDequiz">Vous avez passé <span id="timeGlob"></span> dans tout le quiz</p>
             <p id="feedBack"></p>
             <p id="scoreResult">Votre score est : <span id="scoreFinale"></span> sur <span id ="totalQuestions"></span></p>
             <div id="finalResult">
             </div>
-            <button id="recommancerBtn">Recommencer</button>
+            <button id="displayDashboardBtn">Dashboard</button>
+        </div>
+         <!-- 6eme écran -->
+        <div class="screen" id="dashboardScreen">
+            <h1>Tableau de Bord</h1>
+            
+            <div id="emptyState" class="empty-state" style="display: none;">
+                <h3>Aucune partie jouée</h3>
+                <p>Commencez votre premier quiz pour voir vos statistiques ici !</p>
+            </div>
+
+            <div id="dashboardContent" >
+                <!-- Statistiques globales -->
+                <div class="dashboard-grid">
+                    <div class="stats-card">
+                        <div class="stat-number" id="totalGames">0</div>
+                        <div class="stat-label">Parties jouées</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stat-number" id="bestScore">0%</div>
+                        <div class="stat-label">Meilleur score</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="stat-number" id="avgScore">0%</div>
+                        <div class="stat-label">Score moyen</div>
+                    </div>
+                    <!-- <div class="stats-card">
+                        <div class="stat-number" id="totalTime">0min</div>
+                        <div class="stat-label">Temps total</div>
+                    </div> -->
+                </div>
+
+                <!-- Top 3 joueurs -->
+                <h2>Top 3 Joueurs</h2>
+                <div class="topPlayers" id="topPlayers">
+                    <!-- Généré dynamiquement -->
+                </div>
+                
+                <!-- Graphiques -->
+                <div class="chart-grid">
+                    <div class="chart-container">
+                        <h3>📈 Répartition par Catégorie</h3>
+                        <canvas id="categorieChart" width="300" height="120"></canvas>
+                    </div>
+                    <div class="chart-container">
+                        <h3>📊 Progression des Scores</h3>
+                        <canvas id="progressScoreChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+
+                <!-- Statistiques par categorie -->
+                <h2>Statistiques Par catégorie</h2>
+                <div class="categorieStats" id="catStats">
+                    <!-- Généré dynamiquement -->
+                </div>
+
+            </div>
+
+            <!-- Boutons d'action -->
+            <div class="btns">
+                <button id="recommancerBtn">Recommencer</button>
+                <button id="clearBtn">Réinitialiser</button>
+                <button id="exportCsvBtn">Export CSV</button>
+                <button id="exportJsonBtn">Export JSON</button>
+            </div>
         </div>
     </div>
     <script type="module" src="./modules/main.js"></script>
-    <!-- <script src="script.js"></script> -->
 </body>
 </html>
