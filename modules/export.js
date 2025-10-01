@@ -29,7 +29,7 @@ export function exportToCSV(history) {
 
 //export des données en JSON
 export function exportToJson(data, filename ="data.json"){
-    const jsonString = JSON.stringify(data);
+    const jsonString = JSON.stringify(data, null, 2);
 
     const blob = new Blob([jsonString], { type: "application/json" });
 

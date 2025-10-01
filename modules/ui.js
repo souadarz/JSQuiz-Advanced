@@ -1,4 +1,3 @@
-import { questionsData } from "./main.js";
 import { formatTime, validateAnswer } from "./quiz.js";
 import { nbrtotalGames, bestScore, avgScore, avgScoreCategorie } from "./stats.js";
 
@@ -9,7 +8,6 @@ const total = document.getElementById("totalQuestions");
 const totalGames = document.getElementById("totalGames");
 const meilleurScore = document.getElementById("bestScore");
 const moyScore = document.getElementById("avgScore");
-const totalTime = document.getElementById("totalTime");
 const containerTopPlayers = document.getElementById("topPlayers");
 const containerCatStats = document.getElementById("catStats");
 
@@ -48,7 +46,7 @@ export function handleAnswerSelection(input, label, nextBtn) {
 }
 
 //l'affichage des resultas d'un quiz(durée, score, la question avec reponses choisies et reponses correct)
-export function showResult(quiz, totalSeconds) {
+export function showResult(quiz, totalSeconds, questionsData) {
   timeGlob.textContent = `${formatTime(totalSeconds)} seconds `;
   scoreFinale.textContent = quiz.score;
   total.textContent = questionsData.length;

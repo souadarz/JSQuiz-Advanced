@@ -39,7 +39,7 @@
         <div class="screen" id="cardScreen">
             <h1>JSQuizStarter</h1>
             <div  id="cards">
-                <div class="card cardReprendre">
+                <div class="card cardReprendre" id="cardReprendre">
                     <h3>Reprendre</h3>
                     <p>Continuer là où vous vous êtes arrêté</p>
                 </div>
@@ -125,10 +125,6 @@
                         <div class="stat-number" id="avgScore">0%</div>
                         <div class="stat-label">Score moyen</div>
                     </div>
-                    <!-- <div class="stats-card">
-                        <div class="stat-number" id="totalTime">0min</div>
-                        <div class="stat-label">Temps total</div>
-                    </div> -->
                 </div>
 
                 <!-- Top 3 joueurs -->
@@ -157,10 +153,8 @@
 
             </div>
 
-            <!-- Boutons d'action -->
             <div class="btns">
-                <button id="recommancerBtn">Recommencer</button>
-                <button id="statsTableBtn">Réinitialiser</button>
+                <button id="statsTableBtn">Statistiques</button>
             </div>
         </div>
         <!-- 7eme ecran -->
@@ -177,8 +171,11 @@
                 </thead>
                 <tbody></tbody>
             </table>
-            <button id="exportCsvBtn">Export CSV</button>
-            <button id="exportJsonBtn">Export JSON</button>
+            <div class="btns">
+                <button id="recommancerBtn">Recommencer</button>
+                <button id="exportCsvBtn">Export CSV</button>
+                <button id="exportJsonBtn">Export JSON</button>
+            </div>
         </div>
     </div>
     <script type="module" src="./modules/main.js"></script>

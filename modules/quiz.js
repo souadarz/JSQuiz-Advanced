@@ -4,11 +4,11 @@ import {
   displayStats,
   displayTopPlayers,
   handleAnswerSelection,
+  switchScreen
 } from "./UI.js";
 import { createCategorieCharts, createProgressScoreShart } from "./chart.js";
-import { questionsData } from "./main.js";
 import { topPlayers } from "./stats.js";
-import { getQuizHistory } from "./storage.js";
+import { getQuizHistory, getQuizProgress, saveQuizProgress } from "./storage.js";
 
 const question = document.getElementById("question");
 const reponsesDiv = document.getElementById("reponses");
@@ -24,9 +24,12 @@ export let totalSeconds = 0;
 export const quizState = {
   quizHistory: [],
   score: 0,
+  currentIndex: 0,
+  interrompu: true,
+  currentUser: null
 };
 
-
+//récupérations des données par categorie
 export async function fetchData(categorie) {
   try {
     const res = await fetch(`../data/${categorie}.json`);
@@ -39,12 +42,13 @@ export async function fetchData(categorie) {
   }
 }
 
-//
+//Affichage d'une question avec ses réponses possibles
 export function showQuestions(questionData, index) {
   question.textContent = "";
   reponsesDiv.textContent = "";
 
   const quest = questionData[index];
+  console.log("quest", quest);
   currentQuestion.textContent = index + 1;
   question.textContent = quest.question;
   quest.reponses.forEach((rep, i) => {
@@ -55,7 +59,7 @@ export function showQuestions(questionData, index) {
     reponsesDiv.appendChild(label);
   });
   stopTimer(timerQuestion);
-  timerQuestion = timer(3);
+  timerQuestion = timer(4);
 }
 
 //Récupere les réponses utilisateur et verifier si elles sont correctes
@@ -65,7 +69,7 @@ export function validateAnswer(currentQuestionData, responsesContainer) {
   selectedRes.forEach((input) => {
     userChoices.push(parseInt(input.getAttribute("data-resIndex")));
   });
-
+  console.log("aaaaa", currentQuestionData);
   const correctAnswers = [...currentQuestionData.reponse_correct].sort(
     (a, b) => a - b
   );
@@ -94,17 +98,24 @@ export function updateQuizHistorique(
 }
 
 // Passe à la question suivante ou termine le quiz
-export function handleNextStep(currentIndex, quizHistory = [], score) {
+export function handleNextStep(currentIndex, quizHistory = [], score, questionsData) {
   stopTimer(timerQuestion);
   if (currentIndex < questionsData.length - 1) {
     let newIndex = currentIndex + 1;
     nextBtn.disabled = true;
     showQuestions(questionsData, newIndex);
+
+    quizState.currentIndex = newIndex;
+    quizState.score = score;
+    quizState.interrompu = true;
+    quizHistory[quizHistory.length - 1].currentIndex = newIndex;
+    saveQuizProgress(quizState)
     return newIndex;
   } else {
     nextBtn.style.display = "none";
     submitBtn.style.display = "block";
     quizHistory[quizHistory.length - 1].score = score;
+    quizState.score= score
   }
 }
 
@@ -132,6 +143,7 @@ export function timerGlobale() {
   }, 1000);
 }
 
+//convertir le temps et l'afficher en mm:ss
 export function formatTime(sec) {
   const m = Math.floor(sec / 60)
     .toString()
@@ -153,6 +165,7 @@ export function feedBack(score, total) {
   }
 }
 
+//l'affichage du dashboard
 export function displayDashboard() {
   const history = getQuizHistory();
   displayStats(history);
@@ -162,6 +175,7 @@ export function displayDashboard() {
   displayCategorieStats(history);
 }
 
+//l'affichage de la tabe des statistiques
 export function displayHistoryTable(history) {
 
   history.forEach((quiz) => {

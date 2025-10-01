@@ -12,15 +12,18 @@ import {
   stopTimer,
   totalSeconds,
   displayDashboard,
-  displayHistoryTable
+  displayHistoryTable,
 } from "./quiz.js";
-import { getQuizHistory, saveQuiz } from "./storage.js";
+import {
+  getQuizHistory,
+  saveQuiz,
+  getQuizProgress,
+  clearQuizProgress,
+} from "./storage.js";
 import { switchScreen, showResult, handleClickEvent } from "./UI.js";
 
-quizState.score = 0;
-quizState.currentIndex = 0;
-quizState.quizHistory = [];
 let usernameValue = "";
+export let questionsData = [];
 
 const startScreen = document.getElementById("startScreen");
 const usernameInput = document.getElementById("usernameInput");
@@ -43,8 +46,8 @@ const statsTableScreen = document.getElementById("statsTableScreen");
 const exportCsvBtn = document.getElementById("exportCsvBtn");
 const statsTableBtn = document.getElementById("statsTableBtn");
 const exportJsonBtn = document.getElementById("exportJsonBtn");
-
-export let questionsData = [];
+const ReprendreBtn = document.getElementById("cardReprendre");
+const nextBtn = document.getElementById("nextBtn");
 
 startQuizBtn.addEventListener("click", () => {
   usernameValue = usernameInput.value.trim();
@@ -52,6 +55,7 @@ startQuizBtn.addEventListener("click", () => {
     errorMsg.style.display = "block";
   } else {
     errorMsg.style.display = "none";
+    quizState.currentUser = usernameValue;
     switchScreen(startScreen, cardScreen);
   }
 });
@@ -73,6 +77,8 @@ categories.forEach((cat) => {
       reponses: [],
       date: new Date().toISOString(),
       score: quizState.score,
+      currentIndex: quizState.currentIndex,
+      interrompu: true,
     });
     if (dataCategorie) {
       showQuestions(questionsData, quizState.currentIndex);
@@ -98,7 +104,8 @@ nextBtn.addEventListener("click", () => {
   quizState.currentIndex = handleNextStep(
     quizState.currentIndex,
     quizState.quizHistory,
-    quizState.score
+    quizState.score,
+    questionsData
   );
 });
 
@@ -106,19 +113,21 @@ submitBtn.addEventListener("click", () => {
   stopTimer(timerG);
   switchScreen(questionScreen, resultScreen);
   let dernierQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
+  quizState.interrompu = false;
+  dernierQuiz.interrompu = false;
   saveQuiz(dernierQuiz);
 
+  clearQuizProgress(quizState.currentUser);
   const totalQuest = questionsData.length;
   feedback.innerHTML = feedBack(dernierQuiz.score, totalQuest);
-  showResult(dernierQuiz, totalSeconds);
+  showResult(dernierQuiz, totalSeconds, questionsData);
 });
 
 recommancerBtn.addEventListener("click", () => {
-  switchScreen(resultScreen, startScreen);
+  switchScreen(statsTableScreen, cardScreen);
   quizState.currentIndex = 0;
   quizState.score = 0;
-  nextBtn.style.display = "block";
-  submitBtn.style.display = "none";
+  quizState.interrompu = true;
 });
 
 handleClickEvent(displayDashboardBtn, () => {
@@ -131,18 +140,45 @@ handleClickEvent(cardDashboard, () => {
   displayDashboard(history);
 });
 
-handleClickEvent(statsTableBtn,()=>{
+handleClickEvent(statsTableBtn, () => {
   const history = getQuizHistory();
-  switchScreen(dashboardScreen,statsTableScreen);
+  switchScreen(dashboardScreen, statsTableScreen);
   displayHistoryTable(history);
 });
 
-handleClickEvent(exportCsvBtn, ()=>{
+handleClickEvent(exportCsvBtn, () => {
   const history = getQuizHistory();
   exportToCSV(history);
 });
 
-handleClickEvent(exportJsonBtn, ()=>{
+handleClickEvent(exportJsonBtn, () => {
   const history = getQuizHistory();
   exportToJson(history);
-})
+});
+
+handleClickEvent(ReprendreBtn, () => {
+  reprendQuiz(questionsData);
+});
+
+async function reprendQuiz() {
+  const savedProgress = getQuizProgress(quizState.currentUser);
+
+  if (savedProgress && savedProgress.interrompu) {
+    Object.assign(quizState, savedProgress);
+
+    const lastQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
+    const categorie = lastQuiz.categorie;
+
+    let dataCategoie = await fetchData(categorie);
+    questionsData = dataCategoie.questions;
+    switchScreen(cardScreen, questionScreen);
+
+    showQuestions(questionsData, quizState.currentIndex);
+
+    timerGlobale();
+  } else {
+    alert(
+      "Aucun quiz interrompu trouvé, vous pouvez commencer une nouvelle partie"
+    );
+  }
+}
