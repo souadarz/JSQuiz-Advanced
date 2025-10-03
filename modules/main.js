@@ -1,3 +1,4 @@
+import { exportToCSV, exportToJson } from "./export.js";
 import {
   fetchData,
   showQuestions,
@@ -10,14 +11,19 @@ import {
   timerG,
   stopTimer,
   totalSeconds,
+  displayDashboard,
+  displayHistoryTable,
 } from "./quiz.js";
-import { saveQuiz } from "./storage.js";
+import {
+  getQuizHistory,
+  saveQuiz,
+  getQuizProgress,
+  clearQuizProgress,
+} from "./storage.js";
 import { switchScreen, showResult, handleClickEvent } from "./UI.js";
 
-quizState.score = 0;
-quizState.currentIndex = 0;
-quizState.quizHistory = [];
 let usernameValue = "";
+export let questionsData = [];
 
 const startScreen = document.getElementById("startScreen");
 const usernameInput = document.getElementById("usernameInput");
@@ -33,9 +39,15 @@ const nbrQuestions = document.getElementById("nbrQuestions");
 const feedback = document.querySelector("#feedBack");
 const recommancerBtn = document.querySelector("#recommancerBtn");
 const cardNewQuiz = document.getElementById("cardNewQuiz");
-
-
-export let questionsData = [];
+const displayDashboardBtn = document.getElementById("displayDashboardBtn");
+const cardDashboard = document.getElementById("cardDashboard");
+const dashboardScreen = document.getElementById("dashboardScreen");
+const statsTableScreen = document.getElementById("statsTableScreen");
+const exportCsvBtn = document.getElementById("exportCsvBtn");
+const statsTableBtn = document.getElementById("statsTableBtn");
+const exportJsonBtn = document.getElementById("exportJsonBtn");
+const ReprendreBtn = document.getElementById("cardReprendre");
+const nextBtn = document.getElementById("nextBtn");
 
 startQuizBtn.addEventListener("click", () => {
   usernameValue = usernameInput.value.trim();
@@ -43,11 +55,12 @@ startQuizBtn.addEventListener("click", () => {
     errorMsg.style.display = "block";
   } else {
     errorMsg.style.display = "none";
-    switchScreen(startScreen,cardScreen);
+    quizState.currentUser = usernameValue;
+    switchScreen(startScreen, cardScreen);
   }
 });
 
-handleClickEvent(cardNewQuiz, ()=>switchScreen(cardScreen,categorieScreen));
+handleClickEvent(cardNewQuiz, () => switchScreen(cardScreen, categorieScreen));
 
 categories.forEach((cat) => {
   cat.addEventListener("click", async () => {
@@ -62,8 +75,10 @@ categories.forEach((cat) => {
       username: usernameValue,
       categorie: categorie,
       reponses: [],
-      date: new Date().toLocaleString(),
+      date: new Date().toISOString(),
       score: quizState.score,
+      currentIndex: quizState.currentIndex,
+      interrompu: true,
     });
     if (dataCategorie) {
       showQuestions(questionsData, quizState.currentIndex);
@@ -72,7 +87,6 @@ categories.forEach((cat) => {
 });
 
 nextBtn.addEventListener("click", () => {
-  console.log(totalSeconds);
   const currentQuestionData = questionsData[quizState.currentIndex];
   const { userChoices, isCorrect, correctAnswers } = validateAnswer(
     currentQuestionData,
@@ -90,26 +104,81 @@ nextBtn.addEventListener("click", () => {
   quizState.currentIndex = handleNextStep(
     quizState.currentIndex,
     quizState.quizHistory,
-    quizState.score
+    quizState.score,
+    questionsData
   );
 });
 
-//à revoir la logic de locale storage
 submitBtn.addEventListener("click", () => {
   stopTimer(timerG);
   switchScreen(questionScreen, resultScreen);
-  saveQuiz(quizState.quizHistory);
   let dernierQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
-  quizState.quizHistory.push(dernierQuiz);
+  quizState.interrompu = false;
+  dernierQuiz.interrompu = false;
+  saveQuiz(dernierQuiz);
+
+  clearQuizProgress(quizState.currentUser);
   const totalQuest = questionsData.length;
   feedback.innerHTML = feedBack(dernierQuiz.score, totalQuest);
-  showResult(dernierQuiz, totalSeconds);
+  showResult(dernierQuiz, totalSeconds, questionsData);
 });
 
 recommancerBtn.addEventListener("click", () => {
-  switchScreen(resultScreen, startScreen);
+  switchScreen(statsTableScreen, cardScreen);
   quizState.currentIndex = 0;
   quizState.score = 0;
-  nextBtn.style.display = "block";
-  submitBtn.style.display = "none";
+  quizState.interrompu = true;
 });
+
+handleClickEvent(displayDashboardBtn, () => {
+  switchScreen(resultScreen, dashboardScreen);
+  displayDashboard(history);
+});
+
+handleClickEvent(cardDashboard, () => {
+  switchScreen(cardScreen, dashboardScreen);
+  displayDashboard(history);
+});
+
+handleClickEvent(statsTableBtn, () => {
+  const history = getQuizHistory();
+  switchScreen(dashboardScreen, statsTableScreen);
+  displayHistoryTable(history);
+});
+
+handleClickEvent(exportCsvBtn, () => {
+  const history = getQuizHistory();
+  exportToCSV(history);
+});
+
+handleClickEvent(exportJsonBtn, () => {
+  const history = getQuizHistory();
+  exportToJson(history);
+});
+
+handleClickEvent(ReprendreBtn, () => {
+  reprendQuiz(questionsData);
+});
+
+async function reprendQuiz() {
+  const savedProgress = getQuizProgress(quizState.currentUser);
+
+  if (savedProgress && savedProgress.interrompu) {
+    Object.assign(quizState, savedProgress);
+
+    const lastQuiz = quizState.quizHistory[quizState.quizHistory.length - 1];
+    const categorie = lastQuiz.categorie;
+
+    let dataCategoie = await fetchData(categorie);
+    questionsData = dataCategoie.questions;
+    switchScreen(cardScreen, questionScreen);
+
+    showQuestions(questionsData, quizState.currentIndex);
+
+    timerGlobale();
+  } else {
+    alert(
+      "Aucun quiz interrompu trouvé, vous pouvez commencer une nouvelle partie"
+    );
+  }
+}
