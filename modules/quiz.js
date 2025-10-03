@@ -4,11 +4,15 @@ import {
   displayStats,
   displayTopPlayers,
   handleAnswerSelection,
-  switchScreen
-} from "./UI.js";
+  switchScreen,
+} from "./ui.js";
 import { createCategorieCharts, createProgressScoreShart } from "./chart.js";
 import { topPlayers } from "./stats.js";
-import { getQuizHistory, getQuizProgress, saveQuizProgress } from "./storage.js";
+import {
+  getQuizHistory,
+  getQuizProgress,
+  saveQuizProgress,
+} from "./storage.js";
 
 const question = document.getElementById("question");
 const reponsesDiv = document.getElementById("reponses");
@@ -26,7 +30,7 @@ export const quizState = {
   score: 0,
   currentIndex: 0,
   interrompu: true,
-  currentUser: null
+  currentUser: null,
 };
 
 //récupérations des données par categorie
@@ -98,7 +102,12 @@ export function updateQuizHistorique(
 }
 
 // Passe à la question suivante ou termine le quiz
-export function handleNextStep(currentIndex, quizHistory = [], score, questionsData) {
+export function handleNextStep(
+  currentIndex,
+  quizHistory = [],
+  score,
+  questionsData
+) {
   stopTimer(timerQuestion);
   if (currentIndex < questionsData.length - 1) {
     let newIndex = currentIndex + 1;
@@ -109,13 +118,13 @@ export function handleNextStep(currentIndex, quizHistory = [], score, questionsD
     quizState.score = score;
     quizState.interrompu = true;
     quizHistory[quizHistory.length - 1].currentIndex = newIndex;
-    saveQuizProgress(quizState)
+    saveQuizProgress(quizState);
     return newIndex;
   } else {
     nextBtn.style.display = "none";
     submitBtn.style.display = "block";
     quizHistory[quizHistory.length - 1].score = score;
-    quizState.score= score
+    quizState.score = score;
   }
 }
 
@@ -177,7 +186,6 @@ export function displayDashboard() {
 
 //l'affichage de la tabe des statistiques
 export function displayHistoryTable(history) {
-
   history.forEach((quiz) => {
     const tr = document.createElement("tr");
     tr.innerHTML = `

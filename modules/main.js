@@ -20,7 +20,7 @@ import {
   getQuizProgress,
   clearQuizProgress,
 } from "./storage.js";
-import { switchScreen, showResult, handleClickEvent } from "./UI.js";
+import { switchScreen, showResult, handleClickEvent } from "./ui.js";
 
 let usernameValue = "";
 export let questionsData = [];
